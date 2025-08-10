@@ -1,0 +1,153 @@
+h1 {
+  margin-bottom: 20px;
+}
+
+.create-set-page {
+  width: 95%;
+  margin: 0.5rem auto;
+  margin-top: 2.5rem;
+  border-radius: 2rem;
+  background-color: #f6f7fb;
+  padding: 1.5rem;
+}
+
+.create-set-page__h1 {
+  margin-bottom: 2rem;
+}
+
+.title-field {
+  margin-bottom: 1rem;
+  position: relative;
+  width: 100%;
+  display: inline-block;
+}
+
+.title-input,
+.description-input {
+  width: 100%;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.title-input {
+  border: none;
+  appearance: none;
+  background: none;
+  outline: none;
+  padding: 12px;
+  border-radius: 5px;
+  background-color: #fff;
+  font-size: 16px;
+}
+
+.description-input {
+  width: 100%;
+  outline: none;
+  border: none;
+  background: none;
+  background-color: #fff;
+
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-bottom: 2rem;
+}
+
+.tools-container {
+  justify-content: left;
+  gap: 15px;
+}
+
+/* .import-btn {
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 2px solid #d9dde8;
+  font-size: 14px;
+  font-weight: 650;
+  color: #586380;
+  background: none;
+  cursor: pointer;
+  margin-bottom: 2rem;
+} */
+
+/* .import-btn__icon {
+  width: 18px;
+  display: block;
+  margin-right: 8px;
+} */
+
+/* .swap-btn {
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 2px solid #d9dde8;
+  font-size: 14px;
+  font-weight: 650;
+  color: #586380;
+  background: none;
+  cursor: pointer;
+  margin-bottom: 2rem;
+} */
+
+/* .swap-btn__icon {
+  width: 18px;
+  display: block;
+} */
+
+.creating-card + .creating-card {
+  margin-top: 1rem;
+}
+
+.creating-cards {
+  border: none;
+}
+
+.creating-cards__list {
+  list-style: none;
+}
+
+/* /////////////////////////////////// */
+.add-creating-card {
+  height: 5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  margin-top: 1rem;
+}
+
+.add-creating-card__btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #2e3856;
+  font-weight: 700;
+  border-bottom: 5px solid #3ccfcf;
+  padding-bottom: 1rem;
+  letter-spacing: 2px;
+}
+
+.add-creating-card__btn:hover {
+  color: #ffcd1f;
+  border-color: #ffcd1f;
+}
+
+.create-set {
+  /* text-align: right; */
+  display: flex;
+}
+.create-set__btn {
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  border: 2px solid #d9dde8;
+  font-size: 14px;
+  font-weight: 650;
+  color: #586380;
+  background: none;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 200px;
+}
+
+:is(.import-btn, .create-set__btn, .swap-btn):hover {
+  background-color: hsla(0, 0%, 50%, 0.093);
+}

@@ -1,0 +1,45 @@
+<!-- <dialog open class="edit-modal"> -->
+<dialog class="edit-modal__content row">
+  <button class="close-btn" (click)="onCloseBtn()">
+    <img src="close-button.png" class="close-btn__img" alt="close button" />
+  </button>
+  <h2>Edit</h2>
+  <form [formGroup]="form" (submit)="onSubmit($event)">
+    <label>
+      <input
+        placeholder="Edit Term"
+        name="newTerm"
+        formControlName="newTerm"
+        (focus)="termFocused = true"
+        (blur)="termFocused = false"
+        [style.borderBottom]="
+          termFocused ? '4px solid #FFCD1F' : '2px solid black'
+        "
+        type="text"
+        class="edit_input edit__term"
+      />
+    </label>
+    <label>
+      <input
+        name="newDefinition"
+        placeholder="Edit Definition"
+        formControlName="newDefinition"
+        (focus)="definitionFocused = true"
+        (blur)="definitionFocused = false"
+        [style.borderBottom]="
+          definitionFocused ? '4px solid #FFCD1F' : '2px solid black'
+        "
+        type="text"
+        class="edit_input edit__definition"
+      />
+    </label>
+
+    <div class="cancel-save-container row">
+      <button class="cancel-btn row" type="button" (click)="onCloseBtn()">
+        Cancel
+      </button>
+      <button class="save-btn" type="submit">Save</button>
+    </div>
+  </form>
+</dialog>
+<!-- </dialog> -->

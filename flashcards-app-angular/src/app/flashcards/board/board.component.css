@@ -1,0 +1,148 @@
+/* FLASHCARD STYLES ///////////////////////////////// */
+
+:host {
+  width: 100%;
+}
+
+.board {
+  /* width: 60%; */
+  margin: 0 auto;
+  background-color: #fff;
+  flex-direction: column;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.5s ease;
+  /* rotate: x 0deg; */
+  position: relative;
+}
+
+.board button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.board__tools {
+  gap: 100px;
+  position: absolute;
+  transition: all 0.4s ease;
+}
+
+.hint-btn__icon,
+.edit-btn__icon {
+  width: 17px;
+}
+
+.board__tools .hint-btn {
+  padding: 8px 12px;
+  gap: 10px;
+  font-weight: 600;
+  border-radius: 40px;
+}
+
+.board__tools .edit-btn {
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.board__tools .hint-btn--clicked {
+  background-color: #edeff4;
+}
+
+.board__tools .edit-btn:hover {
+  background-color: rgba(128, 128, 128, 0.419);
+}
+
+/* Below Tools */
+/* ///////////// */
+/* ////////////////////////////////// */
+/* ////////////////////////////////// */
+
+/* .below-tools {
+  position: absolute;
+  bottom: -50px;
+  right: 20px;
+}
+
+.below-tools :is(.flashcards-shuffle-btn, .flashcards-swap-btn) {
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 2px solid hsl(224, 25%, 88%);
+  font-size: 14px;
+  font-weight: 650;
+  color: #586380;
+  background: none;
+  cursor: pointer;
+  margin: 0;
+}
+
+.flashcards-swap-btn__icon {
+  width: 18px;
+  display: block;
+} */
+
+/* :is(.flashcards-shuffle-btn, .flashcards-swap-btn):hover {
+  background-color: hsla(0, 0%, 50%, 0.093);
+  background-color: red;
+} */
+
+.below-tools .flashcards-swap-btn:hover {
+  background-color: hsla(0, 0%, 50%, 0.093);
+}
+
+.word-container {
+  font-size: 20px;
+  margin: 150px auto;
+  text-align: center;
+}
+
+.word-container p {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+/* .termOrDefinition {
+  padding: 2px 15px;
+  border-radius: 20px;
+} */
+
+/* .transformedToDefinition {
+  background-color: rgb(77, 255, 0);
+  transition: background-color 0.3s ease, width 0.3s ease;
+} */
+
+.rotate {
+  rotate: x 180deg;
+}
+
+.text {
+  transition: all 0.5s ease;
+}
+
+.back {
+  opacity: 0;
+  rotate: x 180deg;
+}
+
+.front {
+  opacity: 0;
+}
+
+.back-visible {
+  opacity: 1;
+}
+
+.front-visible {
+  opacity: 1;
+}
+
+.board__tools--invisible {
+  opacity: 0;
+}
+
+.hidden {
+  display: none;
+}

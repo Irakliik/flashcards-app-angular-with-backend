@@ -1,0 +1,43 @@
+/* || Reset */
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* || Utility Styles */
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+  /* position: absolute; */
+}
+
+/* || General styles */
+
+body {
+  font-family: "Roboto";
+  background-color: gray;
+}
+
+.home-body {
+  background-image: url(/immages/flashcard1.jpg);
+}
+
+.create-set-body {
+  background-image: url(/immages/flashcards3.png);
+}

@@ -1,0 +1,34 @@
+<div class="board row" [class.rotate]="rotate" (click)="turnCard()">
+  <div
+    class="board__tools row"
+    [class]="{
+      'board__tools--invisible': toolsInvisible,
+      hidden: hidden
+    }"
+  >
+    <button
+      class="hint-btn row"
+      (click)="onHint($event)"
+      [class.hint-btn--clicked]="hintShown()"
+    >
+      <img src="bulb.png" class="hint-btn__icon" alt="hint icon" />
+      <span class="hint-text">{{ hintBtnName() }}</span>
+    </button>
+    <button class="edit-btn row" (click)="onEditCard($event)">
+      <img src="edit.png" class="edit-btn__icon" alt="edit icon" />
+    </button>
+  </div>
+  <div class="word-container">
+    @if (front()) {
+    <p class="front text" [class.front-visible]="frontVisible">
+      {{ selectedCard().term }}
+    </p>
+    } @else {
+
+    <p class="back text" [class.back-visible]="backVisible">
+      {{ selectedCard().definition }}
+    </p>
+
+    }
+  </div>
+</div>

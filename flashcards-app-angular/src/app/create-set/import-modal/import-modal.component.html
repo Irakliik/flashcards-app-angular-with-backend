@@ -1,0 +1,29 @@
+<div class="import-modal" (click)="onCancel()"></div>
+
+<dialog open class="content">
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+    <div>
+      <h1>Import your data</h1>
+      <label class="import-textarea-label">
+        <textarea
+          (focus)="isFocused = true"
+          (blur)="isFocused = false"
+          [style.outline]="isFocused ? '4px solid #2e41e7' : 'none'"
+          class="import-textarea"
+          name="import-textarea"
+          rows="10"
+          placeholder="Word 1   Definition 1&#10;Word 2   Definition 2&#10;Word 3   Definition 3"
+          ngModel
+          name="import"
+        ></textarea>
+      </label>
+    </div>
+
+    <div class="buttons-container row">
+      <button class="cancel-import" type="button" (click)="onCancel()">
+        Cancel Import
+      </button>
+      <button class="import" type="submit">Import</button>
+    </div>
+  </form>
+</dialog>

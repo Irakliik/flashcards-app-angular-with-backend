@@ -1,0 +1,21 @@
+.sets-menu {
+  background-color: #f6f7fb;
+  width: 95%;
+  margin: 0 auto;
+  border-radius: 25px;
+  min-height: 80vh;
+  padding: 20px;
+}
+
+.sets-menu :is(h1, p) {
+  color: #586380;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.sets-menu__item {
+  list-style: none;
+  width: 50%;
+}

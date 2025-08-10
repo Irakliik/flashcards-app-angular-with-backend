@@ -1,0 +1,30 @@
+<!-- <li data-creating-card-num="${cardNum - 1}" class="creating-card"> -->
+<div class="creating-card__head row">
+  <span class="creating-card__num"> {{ cardNum + 1 }}</span>
+  <button type="button" class="delete-button" (click)="onDeleteCreatingCard()">
+    <img src="bin.png" alt="delete icon" />
+  </button>
+</div>
+
+<fieldset class="term-definition row" [formGroup]="creatingCard">
+  <label class="term-field">
+    <input
+      type="text"
+      class="term"
+      placeholder="Enter term"
+      name="text"
+      formControlName="term"
+    />
+  </label>
+
+  <label class="definition-field">
+    <input
+      type="text"
+      class="definition"
+      name="definition"
+      placeholder="Enter definition"
+      formControlName="definition"
+    />
+  </label>
+</fieldset>
+<!-- </li> -->

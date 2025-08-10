@@ -1,0 +1,121 @@
+/* FLASHCARD STYLES ///////////////////////////////// */
+
+.flashcards-main {
+  width: 95%;
+  margin: 0.5rem auto;
+  margin-top: 2.5rem;
+  border-radius: 2rem;
+  background-color: #f6f7fb;
+  padding: 1.5rem;
+}
+
+.flashcards-main__title {
+}
+.flashcards-main__description {
+  margin-bottom: 40px;
+  color: #586380;
+}
+
+.flashcards-stuff-container {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 60%;
+  margin: 0 auto;
+  padding-bottom: 1px;
+}
+
+/* /////////////////////// */
+/* FLASH CARDS PROGRESS */
+/* /////////////////////// */
+
+.tools-below {
+  margin-top: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.arrows {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: #586380;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.arrows button {
+  background: none;
+  border: none;
+  /* background-color: rgba(128, 128, 128, 0.3); */
+  padding: 5px 15px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #d9dde8;
+  cursor: pointer;
+}
+
+.left-arrow__icon,
+.right-arrow__icon {
+  width: 25px;
+}
+
+.arrows button:hover {
+  background-color: #d9dde8;
+}
+
+.flashcards-progress-container {
+  margin: 5px 0;
+  width: 100%;
+}
+
+.flashcards-progress {
+  width: 100%;
+}
+
+.flashcards-swap-btn,
+.flashcards-shuffle-btn {
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 2px solid hsl(224, 25%, 88%);
+  font-size: 14px;
+  font-weight: 650;
+  color: #586380;
+  background: none;
+  cursor: pointer;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+}
+
+.flashcards-shuffle-btn {
+  right: 50px;
+}
+
+.flashcards-swap-btn__icon,
+.flashcards-shuffle-btn__icon {
+  width: 18px;
+  display: block;
+}
+
+.flashcards-swap-btn:hover,
+.flashcards-shuffle-btn:hover {
+  background-color: hsla(0, 0%, 50%, 0.093);
+}
+
+/* /////////////////////////////// */
+
+/* //////////////////////////////////////// */
+/* //////////////////////////////////////// */
+/* ////// EDIT-MODAL */

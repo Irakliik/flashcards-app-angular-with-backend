@@ -1,0 +1,92 @@
+.edit-modal {
+}
+
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* display: none; */
+}
+
+.edit-modal__content {
+  width: 70%;
+  background-color: #fff;
+  margin: 50px auto;
+  border-radius: 18px;
+  flex-direction: column;
+  align-items: start;
+  padding: 2rem;
+  position: relative;
+  border: none;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-modal label {
+  width: 100%;
+}
+
+.edit_input {
+  margin-top: 3rem;
+  outline: none;
+  border: none;
+  width: 100%;
+  font-size: 16px;
+  padding: 8px;
+  border-bottom: 2px solid black;
+  font-weight: 500;
+}
+
+.cancel-save-container {
+  margin-top: 5rem;
+  align-self: flex-end;
+  gap: 40px;
+}
+
+.cancel-save-container button {
+  border: none;
+  background: none;
+}
+
+.cancel-save-container .cancel-btn {
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #4255ff;
+  font-weight: 550;
+  cursor: pointer;
+}
+
+.cancel-save-container .cancel-btn:hover {
+  background-color: #3346f01a;
+}
+
+.cancel-save-container .save-btn {
+  background-color: #4255ff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 550;
+  cursor: pointer;
+}
+
+.cancel-save-container .save-btn:hover {
+  background-color: hsl(234, 100%, 57%);
+}
+
+.close-btn {
+  width: 19px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 25px;
+  right: 25px;
+}

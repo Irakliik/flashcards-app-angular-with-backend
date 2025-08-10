@@ -1,0 +1,29 @@
+<div class="container">
+  <a [routerLink]="['flashcards', cardSet().setId]" class="row">
+    <figure>
+      <img
+        src="flash-cards.png"
+        class="sets-menu__item__img"
+        alt="Flashcards Icon"
+      />
+    </figure>
+    <div>
+      <h4 class="sets-menu__item__h4">{{ cardSet().title }}</h4>
+      <p>Flashcard set - {{ cards.length }} terms</p>
+    </div>
+    <button
+      type="button"
+      class="edit-button sets-menu__item__edit-btn"
+      (click)="onEditBtn($event)"
+    >
+      <img src="edit.png" alt="delete-icon" />
+    </button>
+    <button
+      type="button"
+      class="delete-button sets-menu__item__del-btn"
+      (click)="onDeleteBtn($event)"
+    >
+      <img src="bin.png" alt="delete-icon" />
+    </button>
+  </a>
+</div>

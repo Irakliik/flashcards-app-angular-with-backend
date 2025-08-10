@@ -1,0 +1,69 @@
+<router-outlet />
+
+<main class="flashcards-main">
+  <h1 class="flashcards-main__title">{{ selectedSet()!.title }}</h1>
+  <h3 class="flashcards-main__description">{{ selectedSet()!.description }}</h3>
+
+  <div class="flashcards-stuff-container">
+    <app-board
+      [selectedCard]="selectedCard()"
+      [(isTerm)]="isTerm"
+      [(hintShown)]="hintShown"
+    ></app-board>
+
+    <div class="tools-below">
+      <div class="arrows">
+        <button class="left-arrow-btn" (click)="onPreviousCard()">
+          <img
+            src="left-arrow.png"
+            class="left-arrow__icon"
+            alt="left arrow icon"
+          />
+        </button>
+        <span class="flashcard-number"> {{ selectedCardNum() + 1 }} </span>
+        /
+        <span class="flashcard-number-from">{{ totalCardsNum }}</span>
+        <button class="right-arrow-btn" (click)="onNextCard()">
+          <img
+            src="right-arrow.png"
+            class="right-arrow__icon"
+            alt="right arrow icon"
+          />
+        </button>
+      </div>
+      <button
+        (click)="onSwapBtn()"
+        appButton
+        type="button"
+        class="flashcards-swap-btn row"
+      >
+        <img
+          class="flashcards-swap-btn__icon"
+          src="swap.png"
+          alt="swap button icon"
+        />
+      </button>
+      <button
+        (click)="onShuffle()"
+        class="flashcards-shuffle-btn row"
+        appButton
+        type="button"
+      >
+        <img
+          src="shuffle.png"
+          alt="swap button icon"
+          class="flashcards-shuffle-btn__icon"
+        />
+      </button>
+    </div>
+
+    <div class="flashcards-progress-container">
+      <progress
+        #progress
+        class="flashcards-progress"
+        [max]="totalCardsNum"
+        [value]="selectedCardNum() + 1"
+      ></progress>
+    </div>
+  </div>
+</main>

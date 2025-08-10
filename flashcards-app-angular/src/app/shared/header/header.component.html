@@ -1,0 +1,31 @@
+<header class="row">
+  <ng-content></ng-content>
+  <nav class="row">
+    <ul class="header__ul row">
+      <li><a routerLink="/">Home</a></li>
+      <li><a href="#">lorem</a></li>
+      <li><a href="#">ipsum</a></li>
+      <li><a href="#">dolor</a></li>
+    </ul>
+    <figure>
+      <img src="quiz.png" alt="Quiz Logo" />
+    </figure>
+    <ul class="header__ul row">
+      <li>
+        <a routerLink="/create-set" class="create-quiz-btn">Create a Quiz</a>
+      </li>
+      <li class="dropdown">
+        <button type="button" class="menu-button">
+          <div class="menu-icon"></div>
+        </button>
+        <div class="dropdown-content">
+          <ul class="dropdown-content__list">
+            <li><a href="">lorem</a></li>
+            <li><a href="">ipsum</a></li>
+            <li><a href="">dolor</a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>

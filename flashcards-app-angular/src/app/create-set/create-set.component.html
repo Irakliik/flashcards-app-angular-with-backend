@@ -1,0 +1,92 @@
+<router-outlet />
+
+<main class="main create-set-page">
+  <h1 class="create-set__h1">Create a new flashcard set</h1>
+  <form
+    (ngSubmit)="onSubmit()"
+    class="create-set-form"
+    name="createSet"
+    [formGroup]="form"
+  >
+    <div>
+      <label class="title-field">
+        <input
+          type="text"
+          placeholder="Enter a title"
+          class="title-input"
+          name="title"
+          formControlName="title"
+        />
+      </label>
+    </div>
+    <div>
+      <label class="description-field">
+        <input
+          type="text"
+          name="description"
+          class="description-input"
+          placeholder="Enter a discription"
+          formControlName="description"
+        />
+      </label>
+    </div>
+    <div class="tools-container row">
+      <button
+        appButton
+        (click)="onImport()"
+        type="button"
+        id="import-btn"
+        class="tool-btn import-btn row"
+      >
+        <img
+          class="tool-icon import-btn__icon"
+          src="plus.png"
+          alt="Import button icon"
+        />
+
+        <span ngProjectAs="btnName">Import</span>
+      </button>
+      <button
+        appButton
+        (click)="onSwap()"
+        type="button"
+        class="tool-btn swap-btn row"
+      >
+        <img
+          class="tool-icon swap-btn__icon"
+          src="swap.png"
+          alt="swap button icon"
+        />
+      </button>
+    </div>
+
+    <fieldset class="creating-cards">
+      <ul class="creating-cards__list">
+        @for (creatingCard of creatingCards; track creatingCard.value.id) {
+        <li
+          appCreatingCard
+          [creatingCard]="creatingCard"
+          [cardNum]="$index"
+          (delete)="onDelete($event)"
+        ></li>
+        }
+      </ul>
+    </fieldset>
+
+    <div class="add-creating-card row">
+      <button
+        type="button"
+        class="add-creating-card__btn"
+        (click)="onAddCard()"
+      >
+        ADD A CARD
+      </button>
+    </div>
+
+    <div class="create-set">
+      <button type="submit" class="tool-btn create-set__btn">
+        {{ isEditing() ? "Save" : "Create" }}
+      </button>
+    </div>
+  </form>
+</main>

@@ -1,0 +1,29 @@
+<div class="searchbox row">
+  <button>
+    <img class="search-btn__img" src="search.png" alt="search icon" />
+  </button>
+  <form>
+    <label>
+      <input
+        type="text"
+        placeholder="Search Something"
+        class="input--search"
+        [(ngModel)]="searchQuery"
+        [ngModelOptions]="{ standalone: true }"
+        (focus)="focused = true"
+        (blur)="onBlur()"
+      />
+    </label>
+  </form>
+  @if (focused) {
+  <div class="searched-items-container">
+    <ul class="searched-items">
+      @for (set of searchSuggestion(); track set.setId) {
+      <li class="searched-item" app-search-suggestion [set]="set"></li>
+      } @empty {
+      <li class="empty"><p>search a set</p></li>
+      }
+    </ul>
+  </div>
+  }
+</div>

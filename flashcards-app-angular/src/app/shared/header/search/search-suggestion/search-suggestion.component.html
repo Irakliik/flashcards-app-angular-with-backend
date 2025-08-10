@@ -1,0 +1,13 @@
+<a [routerLink]="['flashcards', set().setId]" class="row" (click)="onClick()">
+  <figure>
+    <img
+      src="flash-cards.png"
+      class="searched-item__img"
+      alt="Searched Item Image"
+    />
+  </figure>
+
+  <h4 class="searched-item__title">{{ set().title }}</h4>
+  <span class="dash">-</span>
+  <p>{{ cards.length }} cards</p>
+</a>

@@ -1,0 +1,40 @@
+.tool-btn {
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 2px solid #d9dde8;
+  font-size: 14px;
+  font-weight: 650;
+  color: #586380;
+  background: none;
+  cursor: pointer;
+  margin-bottom: 2rem;
+}
+
+.tool-icon {
+  width: 18px;
+}
+
+.import-btn__icon {
+  margin-right: 8px;
+}
+
+/* .swap-btn {
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 2px solid #d9dde8;
+  font-size: 14px;
+  font-weight: 650;
+  color: #586380;
+  background: none;
+  cursor: pointer;
+  margin-bottom: 2rem;
+} */
+
+.create-set__btn {
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+}
+
+:is(.tool-btn, .create-set__btn, .tool-btn, .flashcards-swap-btn):hover {
+  background-color: hsla(0, 0%, 50%, 0.093);
+}
