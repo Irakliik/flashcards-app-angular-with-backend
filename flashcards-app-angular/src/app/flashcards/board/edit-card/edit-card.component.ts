@@ -27,7 +27,7 @@ export class EditCardComponent implements OnInit {
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
   // setId = input.required<string>();
-  cardId = input.required<string>();
+  cardId = input.required<number>();
   card = computed<Card>(() => this.flashcardsService.getCard(this.cardId())!)!;
 
   form = new FormGroup({
@@ -37,8 +37,8 @@ export class EditCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.form.setValue({
-      newTerm: this.card().term,
-      newDefinition: this.card().definition,
+      newTerm: this.card()?.term,
+      newDefinition: this.card()?.definition,
     });
   }
 

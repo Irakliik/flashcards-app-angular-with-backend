@@ -1,18 +1,13 @@
 import {
   Component,
   computed,
-  ElementRef,
   inject,
   input,
   model,
-  OnInit,
   signal,
-  viewChild,
-  ViewChild,
 } from '@angular/core';
 import { Card } from '../../sets-model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { single } from 'rxjs';
 
 @Component({
   selector: 'app-board',
@@ -24,8 +19,8 @@ import { single } from 'rxjs';
 export class BoardComponent {
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
-  selectedCard = input.required<Card>();
-  isTerm = model.required<boolean>();
+  selectedCard = input<Card>();
+  isTerm = model<boolean>();
   front = signal(true);
   rotate = false;
   backVisible = false;
@@ -37,7 +32,7 @@ export class BoardComponent {
 
   hintBtnName = computed(() =>
     this.hintShown()
-      ? this.selectedCard()
+      ? this.selectedCard()!
           .definition.split(' ')
           .reduce(
             (txtCon, word) =>
@@ -74,7 +69,7 @@ export class BoardComponent {
 
   onEditCard(e: Event) {
     e.stopPropagation();
-    this.router.navigate(['./edit', this.selectedCard().id], {
+    this.router.navigate(['./edit', this.selectedCard()!.id], {
       relativeTo: this.activatedRoute,
     });
   }

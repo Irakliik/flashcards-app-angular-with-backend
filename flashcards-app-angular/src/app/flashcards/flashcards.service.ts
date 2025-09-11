@@ -1,21 +1,40 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Card, CardSet, NewCard, type NewSet, type Sets } from '../sets-model';
-import { Subject } from 'rxjs';
+import { catchError, map, Subject, tap, throwError } from 'rxjs';
 import { cards, Flashcards } from './flashcards';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class FlashcardsService {
-  constructor() {
-    const sets = localStorage.getItem('sets');
-    const cards = localStorage.getItem('cards');
+  // constructor() {
+  //   const sets = localStorage.getItem('sets');
+  //   const cards = localStorage.getItem('cards');
 
-    if (sets) {
-      this.sets.set(JSON.parse(sets));
-    }
+  //   if (sets) {
+  //     this.sets.set(JSON.parse(sets));
+  //   }
 
-    if (cards) {
-      this.cards.set(JSON.parse(cards));
-    }
+  //   if (cards) {
+  //     this.cards.set(JSON.parse(cards));
+  //   }
+  // }
+
+  httpClient = inject(HttpClient);
+
+  fetchCards(setId: number) {
+    return this.httpClient
+      .get<{ cards: Card[] }>('http://localhost:3000/cards/' + setId)
+      .pipe(map((res) => res.cards));
+  }
+
+  fetchSets() {
+    return this.httpClient
+      .get<{ sets: Sets }>('http://localhost:3000/sets')
+      .pipe(
+        tap((res) => {
+          this.sets.set(res.sets);
+        })
+      );
   }
 
   private sets = signal<Sets>(Flashcards);
@@ -28,18 +47,18 @@ export class FlashcardsService {
 
   updateCard$ = new Subject<NewCard>();
 
-  addSet(newSet: NewSet, newCards: NewCard[]) {
-    const setId = new Date().getTime().toString();
+  // addSet(newSet: NewSet, newCards: NewCard[]) {
+  //   const setId = new Date().getTime().toString();
 
-    this.sets.update((oldsets) => [...oldsets, { ...newSet, setId: setId }]);
+  //   this.sets.update((oldsets) => [...oldsets, { ...newSet, setId: setId }]);
 
-    const cards: Card[] = newCards.map((newCards) => ({
-      ...newCards,
-      setId: setId,
-    }));
+  //   const cards: Card[] = newCards.map((newCards) => ({
+  //     ...newCards,
+  //     setId: setId,
+  //   }));
 
-    this.cards.update((oldCards) => [...oldCards, ...cards]);
-  }
+  //   this.cards.update((oldCards) => [...oldCards, ...cards]);
+  // }
 
   editSet(editedSet: CardSet, editedCards: Card[]) {
     this.sets.update((oldSets) =>
@@ -55,28 +74,37 @@ export class FlashcardsService {
     this.saveCards();
   }
 
-  getSet(setId: string) {
+  getSet(setId: number) {
     return this.sets().find((set) => set.setId === setId);
   }
 
-  getCards(setId: string) {
+  getCards(setId: number) {
     return this.cards().filter((card) => card.setId === setId);
   }
 
-  deleteSet(setId: string) {
+  deleteSet(setId: number) {
+    return this.httpClient
+      .delete<{ sets: Sets }>(`http://localhost:3000/sets/${setId}`)
+      .pipe(
+        tap((res) => {
+          console.log(res);
+          this.sets.set(res.sets);
+        })
+      );
+
     this.sets.update((oldSets) => oldSets.filter((set) => set.setId !== setId));
     this.deleteCards(setId);
     this.saveSets();
     this.saveCards();
   }
 
-  deleteCards(setId: string) {
+  deleteCards(setId: number) {
     this.cards.update((oldcards) =>
       oldcards.filter((card) => card.setId !== setId)
     );
   }
 
-  getCard(cardId: string) {
+  getCard(cardId: number) {
     return this.allCards().find((card) => card.id === cardId);
   }
 
@@ -87,7 +115,7 @@ export class FlashcardsService {
     this.saveCards();
   }
 
-  swapCards(setId: string) {
+  swapCards(setId: number) {
     this.cards.update((oldCards) =>
       oldCards.map((card) =>
         card.setId === setId
@@ -115,7 +143,7 @@ export class FlashcardsService {
     return cards;
   }
 
-  shuffleCards(setId: string) {
+  shuffleCards(setId: number) {
     const indices = this.cards().reduce<number[]>((acc, val, i) => {
       return val.setId === setId ? [...acc, i] : acc;
     }, []);

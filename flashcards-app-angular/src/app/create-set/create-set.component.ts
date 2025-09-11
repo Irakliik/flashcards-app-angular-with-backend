@@ -39,25 +39,25 @@ export class CreateSetComponent implements OnInit {
   ngOnInit(): void {
     // For Editing [
     if (this.isEditing()) {
-      this.selectedSet = this.flashcardsService.getSet(this.edit()!);
-      this.cards = this.flashcardsService.getCards(this.edit()!);
+      // this.selectedSet = this.flashcardsService.getSet(this.edit()!);
+      // this.cards = this.flashcardsService.getCards(this.edit()!);
 
       this.form.patchValue({
         title: this.selectedSet!.title,
         description: this.selectedSet!.description,
       });
 
-      for (let i = 0; i < this.cards.length - 3; i++) {
-        this.addCardGroup();
-      }
+      // for (let i = 0; i < this.cards.length - 3; i++) {
+      //   this.addCardGroup();
+      // }
 
-      this.form.controls.creatingCards.controls.forEach((control, i) =>
-        control.patchValue({
-          term: this.cards![i].term,
-          definition: this.cards![i].definition,
-          id: this.cards![i].id,
-        })
-      );
+      // this.form.controls.creatingCards.controls.forEach((control, i) =>
+      //   control.patchValue({
+      //     term: this.cards![i].term,
+      //     definition: this.cards![i].definition,
+      //     id: this.cards![i].id,
+      //   })
+      // );
     }
 
     //  ]
@@ -151,40 +151,40 @@ export class CreateSetComponent implements OnInit {
   }
 
   onSubmit() {
-    const cardsValue = this.form.get('creatingCards')!.value as NewCard[];
+    // const cardsValue = this.form.get('creatingCards')!.value as NewCard[];
     const title = this.form.get('title')!.value as string;
     const description = this.form.get('description')!.value as string;
 
-    const newCards = cardsValue.filter(
-      (creatingCard) => creatingCard.definition && creatingCard.term
-    );
+    // const newCards = cardsValue.filter(
+    //   (creatingCard) => creatingCard.definition && creatingCard.term
+    // );
 
-    if (this.isEditing()) {
-      const setId = this.selectedSet!.setId;
+    // if (this.isEditing()) {
+    //   const setId = this.selectedSet!.setId;
 
-      const editedCards = newCards.map((card) => ({ ...card, setId }));
+    //   const editedCards = newCards.map((card) => ({ ...card, setId }));
 
-      this.flashcardsService.editSet(
-        {
-          title,
-          description,
-          setId,
-        },
-        editedCards
-      );
+    //   this.flashcardsService.editSet(
+    //     {
+    //       title,
+    //       description,
+    //       setId,
+    //     },
+    //     editedCards
+    //   );
 
-      this.router.navigate(['']);
-      return;
-    }
+    //   this.router.navigate(['']);
+    //   return;
+    // }
 
-    this.flashcardsService.addSet(
-      {
-        title: title,
-        description: description,
-      },
-      newCards
-    );
-    this.router.navigate(['']);
+    // this.flashcardsService.addSet(
+    //   {
+    //     title: title,
+    //     description: description,
+    //   },
+    //   newCards
+    // );
+    // this.router.navigate(['']);
   }
 
   onSwap() {

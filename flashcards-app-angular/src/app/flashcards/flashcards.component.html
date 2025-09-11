@@ -22,7 +22,7 @@
         </button>
         <span class="flashcard-number"> {{ selectedCardNum() + 1 }} </span>
         /
-        <span class="flashcard-number-from">{{ totalCardsNum }}</span>
+        <span class="flashcard-number-from">{{ totalCardsNum() }}</span>
         <button class="right-arrow-btn" (click)="onNextCard()">
           <img
             src="right-arrow.png"
@@ -61,7 +61,7 @@
       <progress
         #progress
         class="flashcards-progress"
-        [max]="totalCardsNum"
+        [max]="totalCardsNum()"
         [value]="selectedCardNum() + 1"
       ></progress>
     </div>

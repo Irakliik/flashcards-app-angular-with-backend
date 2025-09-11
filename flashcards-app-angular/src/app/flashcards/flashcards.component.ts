@@ -9,6 +9,9 @@ import {
 import { FlashcardsService } from './flashcards.service';
 import { RouterOutlet } from '@angular/router';
 import { BoardComponent } from './board/board.component';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/internal/operators/map';
+import { Card, CardSet, Sets } from '../sets-model';
 
 @Component({
   selector: 'app-flashcards',
@@ -18,37 +21,49 @@ import { BoardComponent } from './board/board.component';
   styleUrl: './flashcards.component.css',
 })
 export class FlashcardsComponent implements OnInit {
-  setId = input.required<string>();
+  setId = input.required<number>();
+  httpClient = inject(HttpClient);
   flashcardsService = inject(FlashcardsService);
 
-  selectedSet = computed(() =>
-    this.flashcardsService.allSets().find((set) => set.setId === this.setId())
-  );
+  selectedSet = signal<CardSet>({
+    title: '',
+    description: '',
+    setId: 0,
+    numCards: 0,
+  });
 
-  selectedCards = computed(() =>
-    this.flashcardsService
-      .allCards()
-      .filter((set) => set.setId === this.setId())
-  );
-  totalCardsNum!: number;
+  selectedCards = signal<Card[]>([]);
+  totalCardsNum = signal(0);
   selectedCardNum = signal(0);
 
-  selectedCard = computed(() => this.selectedCards()[this.selectedCardNum()]);
+  selectedCard = computed(() => this.selectedCards()![this.selectedCardNum()]);
 
   isTerm = true;
   hintShown = false;
 
   ngOnInit(): void {
-    this.totalCardsNum = this.selectedCards().length;
-
-    this.flashcardsService.updateCard$.subscribe({
-      next: (newCard) => {
-        this.flashcardsService.replaceCard({
-          ...newCard,
-          setId: this.selectedSet()!.setId,
-        });
+    this.flashcardsService.fetchSets().subscribe({
+      next: (sets) => {
+        // console.log(sets.find((set) => set.setId === this.setId()));
+        // this.selectedSet.set(sets.find((set) => set.setId == this.setId())!);
       },
     });
+
+    this.flashcardsService.fetchCards(this.setId()).subscribe({
+      next: (cards) => {
+        this.selectedCards.set(cards);
+        this.totalCardsNum.set(cards.length);
+      },
+    });
+
+    // this.flashcardsService.updateCard$.subscribe({
+    //   next: (newCard) => {
+    //     this.flashcardsService.replaceCard({
+    //       ...newCard,
+    //       setId: this.selectedSet()!.setId,
+    //     });
+    //   },
+    // });
   }
 
   onPreviousCard() {
@@ -60,7 +75,7 @@ export class FlashcardsComponent implements OnInit {
   }
 
   onNextCard() {
-    if (this.selectedCardNum() < this.totalCardsNum - 1) {
+    if (this.selectedCardNum() < this.totalCardsNum() - 1) {
       this.selectedCardNum.update((val) => ++val);
       this.isTerm = true;
       this.hintShown = false;

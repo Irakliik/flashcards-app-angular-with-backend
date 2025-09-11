@@ -21,12 +21,12 @@
   <div class="word-container">
     @if (front()) {
     <p class="front text" [class.front-visible]="frontVisible">
-      {{ selectedCard().term }}
+      {{ selectedCard()?.term }}
     </p>
     } @else {
 
     <p class="back text" [class.back-visible]="backVisible">
-      {{ selectedCard().definition }}
+      {{ selectedCard()?.definition }}
     </p>
 
     }

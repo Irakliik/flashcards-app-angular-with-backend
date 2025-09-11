@@ -8,18 +8,19 @@ export type NewSet = {
 export type CardSet = {
   title: string;
   description: string;
-  setId: string;
+  setId: number;
+  numCards: number;
 };
 
 export type Card = {
   term: string;
   definition: string;
-  setId: string;
-  id: string;
+  setId: number;
+  id: number;
 };
 
 export type NewCard = {
   term: string;
   definition: string;
-  id: string;
+  id: number;
 };
