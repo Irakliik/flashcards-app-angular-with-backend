@@ -5,11 +5,7 @@
     <ul class="sets-menu__list">
       @if (setFetched) { @for (set of sets(); track set.setId) {
       <li class="sets-menu__item">
-        <app-sets-menu-item
-          [cardSet]="set"
-          [setsLength]="setsLen()"
-          (delete)="onDelete($event)"
-        />
+        <app-sets-menu-item [cardSet]="set" (delete)="onDelete($event)" />
       </li>
       } }
     </ul>

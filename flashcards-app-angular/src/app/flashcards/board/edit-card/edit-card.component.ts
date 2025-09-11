@@ -47,17 +47,14 @@ export class EditCardComponent implements OnInit {
   }
 
   onSubmit(e: Event) {
-    e.preventDefault();
-
-    const newTerm = this.form.value.newTerm!;
-    const newDefinition = this.form.value.newDefinition!;
-
-    this.flashcardsService.updateCard$.next({
-      term: newTerm,
-      definition: newDefinition,
-      id: this.card().id,
-    });
-
-    this.onCloseBtn();
+    // e.preventDefault();
+    // const newTerm = this.form.value.newTerm!;
+    // const newDefinition = this.form.value.newDefinition!;
+    // this.flashcardsService.updateCard$.next({
+    //   term: newTerm,
+    //   definition: newDefinition,
+    //   id: this.card().id,
+    // });
+    // this.onCloseBtn();
   }
 }

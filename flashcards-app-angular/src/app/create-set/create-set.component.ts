@@ -151,13 +151,21 @@ export class CreateSetComponent implements OnInit {
   }
 
   onSubmit() {
-    // const cardsValue = this.form.get('creatingCards')!.value as NewCard[];
+    const cardsValue = this.form.get('creatingCards')!.value.map((value) => ({
+      definition: value.definition,
+      term: value.term,
+    })) as NewCard[];
+
     const title = this.form.get('title')!.value as string;
     const description = this.form.get('description')!.value as string;
 
-    // const newCards = cardsValue.filter(
-    //   (creatingCard) => creatingCard.definition && creatingCard.term
-    // );
+    const newCards = cardsValue.filter(
+      (creatingCard) => creatingCard.definition && creatingCard.term
+    );
+
+    this.flashcardsService
+      .addSet({ title, description, cards: newCards })
+      .subscribe();
 
     // if (this.isEditing()) {
     //   const setId = this.selectedSet!.setId;
@@ -184,7 +192,7 @@ export class CreateSetComponent implements OnInit {
     //   },
     //   newCards
     // );
-    // this.router.navigate(['']);
+    this.router.navigate(['']);
   }
 
   onSwap() {

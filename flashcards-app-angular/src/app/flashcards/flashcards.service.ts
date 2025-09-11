@@ -47,18 +47,20 @@ export class FlashcardsService {
 
   updateCard$ = new Subject<NewCard>();
 
-  // addSet(newSet: NewSet, newCards: NewCard[]) {
-  //   const setId = new Date().getTime().toString();
+  addSet(newSet: NewSet) {
+    // const setId = new Date().getTime().toString();
 
-  //   this.sets.update((oldsets) => [...oldsets, { ...newSet, setId: setId }]);
+    // this.sets.update((oldsets) => [...oldsets, { ...newSet, setId: setId }]);
 
-  //   const cards: Card[] = newCards.map((newCards) => ({
-  //     ...newCards,
-  //     setId: setId,
-  //   }));
+    // const cards: Card[] = newCards.map((newCards) => ({
+    //   ...newCards,
+    //   setId: setId,
+    // }));
 
-  //   this.cards.update((oldCards) => [...oldCards, ...cards]);
-  // }
+    return this.httpClient.post('http://localhost:3000/set', newSet);
+
+    this.cards.update((oldCards) => [...oldCards, ...cards]);
+  }
 
   editSet(editedSet: CardSet, editedCards: Card[]) {
     this.sets.update((oldSets) =>

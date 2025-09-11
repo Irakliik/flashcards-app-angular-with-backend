@@ -23,13 +23,12 @@ import { map, catchError, throwError, tap } from 'rxjs';
 export class HomeComponent implements OnInit {
   flashcardsService = inject(FlashcardsService);
   sets = this.flashcardsService.allSets;
-  setsLen = signal(0);
   httpClient = inject(HttpClient);
   destroyRef = inject(DestroyRef);
   setFetched = false;
 
   ngOnInit(): void {
-    console.log(this.sets);
+    // console.log(this.sets);
     // const subscription = this.httpClient
     //   .get<{ sets: Sets }>('http://localhost:3000/sets')
     //   .pipe(
@@ -48,6 +47,7 @@ export class HomeComponent implements OnInit {
 
     const subscription = this.flashcardsService.fetchSets().subscribe({
       next: () => {
+        console.log(12);
         this.setFetched = true;
       },
       error: () =>

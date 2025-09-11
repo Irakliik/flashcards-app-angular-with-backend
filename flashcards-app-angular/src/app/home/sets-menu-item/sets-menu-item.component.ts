@@ -23,8 +23,6 @@ export class SetsMenuItemComponent implements OnInit {
 
   cardSet = input.required<CardSet>();
 
-  cards!: Card[];
-
   ngOnInit(): void {
     // this.cards = this.flashcardsService.getCards(this.cardSet().setId);
   }
