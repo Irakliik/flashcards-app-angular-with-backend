@@ -86,6 +86,7 @@ export class FlashcardsComponent implements OnInit {
   }
 
   onShuffle() {
-    this.flashcardsService.shuffleCards(this.setId());
+    console.log('nana');
+    this.flashcardsService.shuffleCards();
   }
 }
