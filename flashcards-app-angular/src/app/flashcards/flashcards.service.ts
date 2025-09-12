@@ -17,7 +17,6 @@ export class FlashcardsService {
         map((res) => res.cards),
         tap((cards) => {
           this.cardsOfSet.set(cards);
-          console.log(this.allCardsOfSet());
         })
       );
   }
@@ -27,8 +26,8 @@ export class FlashcardsService {
       .get<{ sets: Sets }>('http://localhost:3000/sets')
       .pipe(
         tap((res) => {
+          // console.log(res.sets);
           this.sets.set(res.sets);
-          // console.log(this.allSets());
         })
       );
   }
@@ -41,7 +40,7 @@ export class FlashcardsService {
 
   allCardsOfSet = this.cardsOfSet.asReadonly();
 
-  updateCard$ = new Subject<NewCard>();
+  // updateCard$ = new Subject<NewCard>();
 
   addSet(newSet: NewSet) {
     // const setId = new Date().getTime().toString();
@@ -97,6 +96,14 @@ export class FlashcardsService {
     this.deleteCards(setId);
     this.saveSets();
     this.saveCards();
+  }
+
+  updateCard(updatedCard: Card) {
+    this.cardsOfSet.update((old) =>
+      old.map((card) => (card.id === updatedCard.id ? updatedCard : card))
+    );
+
+    return this.httpClient.patch('http://localhost:3000/cards', updatedCard);
   }
 
   deleteCards(setId: number) {

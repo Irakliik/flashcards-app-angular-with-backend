@@ -20,7 +20,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     const subscription = this.flashcardsService.fetchSets().subscribe({
-      next: () => {
+      next: (res) => {
+        console.log(this.sets(), '1');
+        console.log(res.sets, '2');
         this.setFetched = true;
       },
       error: () =>

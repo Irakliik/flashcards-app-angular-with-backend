@@ -1,8 +1,8 @@
 <router-outlet />
 
 <main class="flashcards-main">
-  <h1 class="flashcards-main__title">{{ selectedSet()!.title }}</h1>
-  <h3 class="flashcards-main__description">{{ selectedSet()!.description }}</h3>
+  <h1 class="flashcards-main__title">{{ selectedSet()?.title }}</h1>
+  <h3 class="flashcards-main__description">{{ selectedSet()?.description }}</h3>
 
   <div class="flashcards-stuff-container">
     <app-board

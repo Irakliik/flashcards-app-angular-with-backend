@@ -27,8 +27,8 @@ export class EditCardComponent implements OnInit {
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
   setId = input.required<string>();
-  cardId = input.required<number>();
-  card = computed<Card>(() => this.flashcardsService.getCard(this.cardId())!)!;
+  cardId = input.required<string>();
+  card = computed<Card>(() => this.flashcardsService.getCard(+this.cardId())!)!;
 
   form = new FormGroup({
     newTerm: new FormControl(''),
@@ -36,9 +36,12 @@ export class EditCardComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.form.setValue({
-      newTerm: this.card()?.term,
-      newDefinition: this.card()?.definition,
+    console.log(this.cardId());
+
+    console.log(this.card());
+    this.form.patchValue({
+      newTerm: this.card().term,
+      newDefinition: this.card().definition,
     });
   }
 
@@ -47,14 +50,26 @@ export class EditCardComponent implements OnInit {
   }
 
   onSubmit(e: Event) {
-    // e.preventDefault();
-    // const newTerm = this.form.value.newTerm!;
-    // const newDefinition = this.form.value.newDefinition!;
+    e.preventDefault();
+    const newTerm = this.form.value.newTerm!;
+    const newDefinition = this.form.value.newDefinition!;
     // this.flashcardsService.updateCard$.next({
     //   term: newTerm,
     //   definition: newDefinition,
     //   id: this.card().id,
     // });
-    // this.onCloseBtn();
+
+    const updatedCard: Card = {
+      term: newTerm,
+      definition: newDefinition,
+      id: +this.cardId(),
+      setId: +this.setId(),
+    };
+
+    this.flashcardsService.updateCard(updatedCard).subscribe({
+      next: (res) => console.log(res),
+      error: (err) => console.log(err),
+    });
+    this.onCloseBtn();
   }
 }
