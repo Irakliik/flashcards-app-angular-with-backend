@@ -13,7 +13,13 @@ export class FlashcardsService {
   fetchCards(setId: number) {
     return this.httpClient
       .get<{ cards: Card[] }>('http://localhost:3000/cards/' + setId)
-      .pipe(map((res) => res.cards));
+      .pipe(
+        map((res) => res.cards),
+        tap((cards) => {
+          this.cardsOfSet.set(cards);
+          console.log(this.allCardsOfSet());
+        })
+      );
   }
 
   fetchSets() {
@@ -29,11 +35,11 @@ export class FlashcardsService {
 
   private sets = signal<Sets>(Flashcards);
 
-  private cards = signal<Card[]>(cards);
+  private cardsOfSet = signal<Card[]>(cards);
 
   allSets = this.sets.asReadonly();
 
-  cardsOfset = this.cards.asReadonly();
+  allCardsOfSet = this.cardsOfSet.asReadonly();
 
   updateCard$ = new Subject<NewCard>();
 
@@ -52,18 +58,18 @@ export class FlashcardsService {
       .post('http://localhost:3000/set', newSet)
       .pipe(tap((res) => {}));
 
-    this.cards.update((oldCards) => [...oldCards, ...cards]);
+    this.cardsOfSet.update((oldCards) => [...oldCards, ...cards]);
   }
 
   editSet(editedSet: CardSet, editedCards: Card[]) {
     this.sets.update((oldSets) =>
       oldSets.map((set) => (set.setId === editedSet.setId ? editedSet : set))
     );
-    this.cards.update((oldCards) =>
+    this.cardsOfSet.update((oldCards) =>
       oldCards.filter((card) => card.setId !== editedSet.setId)
     );
 
-    this.cards.update((oldCards) => [...oldCards, ...editedCards]);
+    this.cardsOfSet.update((oldCards) => [...oldCards, ...editedCards]);
 
     this.saveSets();
     this.saveCards();
@@ -74,7 +80,7 @@ export class FlashcardsService {
   }
 
   getCards(setId: number) {
-    return this.cards().filter((card) => card.setId === setId);
+    return this.cardsOfSet().filter((card) => card.setId === setId);
   }
 
   deleteSet(setId: number) {
@@ -94,32 +100,39 @@ export class FlashcardsService {
   }
 
   deleteCards(setId: number) {
-    this.cards.update((oldcards) =>
+    this.cardsOfSet.update((oldcards) =>
       oldcards.filter((card) => card.setId !== setId)
     );
   }
 
   getCard(cardId: number) {
-    return this.cardsOfset().find((card) => card.id === cardId);
+    return this.allCardsOfSet().find((card) => card.id === cardId);
   }
 
   replaceCard(updatedCard: Card) {
-    this.cards.update((oldCards) =>
+    this.cardsOfSet.update((oldCards) =>
       oldCards.map((card) => (card.id === updatedCard.id ? updatedCard : card))
     );
     this.saveCards();
   }
 
-  swapCards(setId: number) {
-    this.cards.update((oldCards) =>
-      oldCards.map((card) =>
-        card.setId === setId
-          ? { ...card, term: card.definition, definition: card.term }
-          : card
-      )
-    );
+  swapCards() {
+    // this.cardsOfSet.update((oldCards) =>
+    //   oldCards.map((card) =>
+    //     card.setId === setId
+    //       ? { ...card, term: card.definition, definition: card.term }
+    //       : card
+    //   )
+    // );
 
-    this.saveCards();
+    // this.saveCards();
+    this.cardsOfSet.update((oldCards) =>
+      oldCards.map((card) => ({
+        ...card,
+        term: card.definition,
+        definition: card.term,
+      }))
+    );
   }
 
   private saveSets() {
@@ -127,7 +140,7 @@ export class FlashcardsService {
   }
 
   private saveCards() {
-    localStorage.setItem('cards', JSON.stringify(this.cards()));
+    localStorage.setItem('cards', JSON.stringify(this.cardsOfSet()));
   }
 
   shuffle(cards: Card[]) {
@@ -139,21 +152,23 @@ export class FlashcardsService {
   }
 
   shuffleCards(setId: number) {
-    const indices = this.cards().reduce<number[]>((acc, val, i) => {
+    const indices = this.cardsOfSet().reduce<number[]>((acc, val, i) => {
       return val.setId === setId ? [...acc, i] : acc;
     }, []);
 
-    const setCards = this.cards().filter((card, i) => card.setId === setId);
+    const setCards = this.cardsOfSet().filter(
+      (card, i) => card.setId === setId
+    );
 
     const shuffledSetCards = this.shuffle([...setCards]);
 
-    const cards = [...this.cards()];
+    const cards = [...this.cardsOfSet()];
 
     indices.forEach((val, i) => {
       cards[val] = shuffledSetCards[i];
     });
 
-    this.cards.set(cards);
+    this.cardsOfSet.set(cards);
 
     this.saveCards();
   }

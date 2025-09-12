@@ -35,7 +35,8 @@ export class FlashcardsComponent implements OnInit {
     this.flashcardsService.allSets().find((set) => set.setId === +this.setId())
   );
 
-  selectedCards = signal<Card[]>([]);
+  // selectedCards = signal<Card[]>([]);
+  selectedCards = computed(() => this.flashcardsService.allCardsOfSet());
 
   totalCardsNum = signal(0);
   selectedCardNum = signal(0);
@@ -47,11 +48,11 @@ export class FlashcardsComponent implements OnInit {
 
   ngOnInit(): void {
     this.flashcardsService.fetchCards(this.setId()).subscribe({
-      next: (cards) => {
-        this.selectedCards.set(cards);
-        this.totalCardsNum.set(cards.length);
+      next: () => {
+        this.totalCardsNum.set(this.selectedCards().length);
       },
     });
+
     // this.flashcardsService.updateCard$.subscribe({
     //   next: (newCard) => {
     //     this.flashcardsService.replaceCard({
@@ -79,7 +80,7 @@ export class FlashcardsComponent implements OnInit {
   }
 
   onSwapBtn() {
-    this.flashcardsService.swapCards(this.selectedSet()!.setId);
+    this.flashcardsService.swapCards();
     this.isTerm = true;
     this.hintShown = false;
   }
