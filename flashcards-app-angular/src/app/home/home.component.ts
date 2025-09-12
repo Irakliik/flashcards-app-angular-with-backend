@@ -1,17 +1,8 @@
-import {
-  Component,
-  DestroyRef,
-  inject,
-  OnInit,
-  Signal,
-  signal,
-} from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
 import { FlashcardsService } from '../flashcards/flashcards.service';
-import { Card, Sets } from '../sets-model';
 import { SetsMenuItemComponent } from './sets-menu-item/sets-menu-item.component';
 import { HttpClient } from '@angular/common/http';
-import { map, catchError, throwError, tap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -28,26 +19,8 @@ export class HomeComponent implements OnInit {
   setFetched = false;
 
   ngOnInit(): void {
-    // console.log(this.sets);
-    // const subscription = this.httpClient
-    //   .get<{ sets: Sets }>('http://localhost:3000/sets')
-    //   .pipe(
-    //     map((res) => res.sets),
-    //     catchError((error) => {
-    //       return throwError(
-    //         () => new Error('Something went wrong fetching the available sets')
-    //       );
-    //     })
-    //   )
-    //   .subscribe({
-    //     next: (sets) => {
-    //       this.sets.set(sets);
-    //     },
-    //   });
-
     const subscription = this.flashcardsService.fetchSets().subscribe({
       next: () => {
-        console.log(12);
         this.setFetched = true;
       },
       error: () =>
@@ -57,9 +30,5 @@ export class HomeComponent implements OnInit {
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
     });
-  }
-
-  onDelete(id: number) {
-    // this.flashcardsService.deleteSet(id);
   }
 }

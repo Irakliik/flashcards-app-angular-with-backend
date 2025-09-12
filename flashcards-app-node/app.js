@@ -50,7 +50,10 @@ app.post("/set", (req, res) => {
 app.get("/cards/:setId", (req, res) => {
   const setId = req.params.setId;
   console.log(setId);
-  db.execute("SELECT * FROM cards WHERE set_id=?", [setId]).then(([cards]) => {
+  db.execute(
+    "SELECT id, term, definition, set_id AS setId  FROM cards WHERE set_id=?",
+    [setId]
+  ).then(([cards]) => {
     res.status(200).json({ cards: cards });
   });
 });
@@ -58,7 +61,10 @@ app.get("/cards/:setId", (req, res) => {
 app.get("/sets/:setId", (req, res) => {
   const setId = req.params.setId;
 
-  db.execute("SELECT * FROM sets WHERE set_id=?", [setId]).then(([set]) => {
+  db.execute(
+    "SELECT title, description, set_id AS setId FROM sets WHERE set_id=?",
+    [setId]
+  ).then(([set]) => {
     res.status(200).json(set);
   });
 });

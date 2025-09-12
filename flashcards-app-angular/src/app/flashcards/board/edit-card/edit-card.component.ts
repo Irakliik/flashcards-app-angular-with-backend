@@ -26,7 +26,7 @@ export class EditCardComponent implements OnInit {
   definitionFocused = false;
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
-  // setId = input.required<string>();
+  setId = input.required<string>();
   cardId = input.required<number>();
   card = computed<Card>(() => this.flashcardsService.getCard(this.cardId())!)!;
 

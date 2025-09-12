@@ -1,23 +1,12 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Card, CardSet, NewCard, type NewSet, type Sets } from '../sets-model';
-import { catchError, map, Subject, tap, throwError } from 'rxjs';
+import { map, Subject, tap, throwError } from 'rxjs';
 import { cards, Flashcards } from './flashcards';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class FlashcardsService {
-  // constructor() {
-  //   const sets = localStorage.getItem('sets');
-  //   const cards = localStorage.getItem('cards');
-
-  //   if (sets) {
-  //     this.sets.set(JSON.parse(sets));
-  //   }
-
-  //   if (cards) {
-  //     this.cards.set(JSON.parse(cards));
-  //   }
-  // }
+  constructor() {}
 
   httpClient = inject(HttpClient);
 
@@ -33,6 +22,7 @@ export class FlashcardsService {
       .pipe(
         tap((res) => {
           this.sets.set(res.sets);
+          // console.log(this.allSets());
         })
       );
   }
@@ -43,7 +33,7 @@ export class FlashcardsService {
 
   allSets = this.sets.asReadonly();
 
-  allCards = this.cards.asReadonly();
+  cardsOfset = this.cards.asReadonly();
 
   updateCard$ = new Subject<NewCard>();
 
@@ -56,8 +46,11 @@ export class FlashcardsService {
     //   ...newCards,
     //   setId: setId,
     // }));
+    console.log('gaga');
 
-    return this.httpClient.post('http://localhost:3000/set', newSet);
+    return this.httpClient
+      .post('http://localhost:3000/set', newSet)
+      .pipe(tap((res) => {}));
 
     this.cards.update((oldCards) => [...oldCards, ...cards]);
   }
@@ -89,7 +82,7 @@ export class FlashcardsService {
       .delete<{ sets: Sets }>(`http://localhost:3000/sets/${setId}`)
       .pipe(
         tap((res) => {
-          console.log(res);
+          // console.log(res);
           this.sets.set(res.sets);
         })
       );
@@ -107,7 +100,7 @@ export class FlashcardsService {
   }
 
   getCard(cardId: number) {
-    return this.allCards().find((card) => card.id === cardId);
+    return this.cardsOfset().find((card) => card.id === cardId);
   }
 
   replaceCard(updatedCard: Card) {

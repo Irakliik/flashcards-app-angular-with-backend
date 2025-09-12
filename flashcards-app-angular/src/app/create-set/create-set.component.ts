@@ -165,7 +165,9 @@ export class CreateSetComponent implements OnInit {
 
     this.flashcardsService
       .addSet({ title, description, cards: newCards })
-      .subscribe();
+      .subscribe({
+        next: (res) => console.log(res),
+      });
 
     // if (this.isEditing()) {
     //   const setId = this.selectedSet!.setId;

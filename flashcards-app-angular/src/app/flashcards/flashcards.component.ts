@@ -25,37 +25,33 @@ export class FlashcardsComponent implements OnInit {
   httpClient = inject(HttpClient);
   flashcardsService = inject(FlashcardsService);
 
-  selectedSet = signal<CardSet>({
-    title: '',
-    description: '',
-    setId: 0,
-    numCards: 0,
-  });
+  // selectedSet = signal<CardSet>({
+  //   title: '',
+  //   description: '',
+  //   setId: 0,
+  //   numCards: 0,
+  // });
+  selectedSet = computed(() =>
+    this.flashcardsService.allSets().find((set) => set.setId === +this.setId())
+  );
 
   selectedCards = signal<Card[]>([]);
+
   totalCardsNum = signal(0);
   selectedCardNum = signal(0);
 
-  selectedCard = computed(() => this.selectedCards()![this.selectedCardNum()]);
+  selectedCard = computed(() => this.selectedCards()[this.selectedCardNum()]);
 
   isTerm = true;
   hintShown = false;
 
   ngOnInit(): void {
-    this.flashcardsService.fetchSets().subscribe({
-      next: (sets) => {
-        // console.log(sets.find((set) => set.setId === this.setId()));
-        // this.selectedSet.set(sets.find((set) => set.setId == this.setId())!);
-      },
-    });
-
     this.flashcardsService.fetchCards(this.setId()).subscribe({
       next: (cards) => {
         this.selectedCards.set(cards);
         this.totalCardsNum.set(cards.length);
       },
     });
-
     // this.flashcardsService.updateCard$.subscribe({
     //   next: (newCard) => {
     //     this.flashcardsService.replaceCard({
