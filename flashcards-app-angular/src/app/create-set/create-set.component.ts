@@ -39,8 +39,6 @@ export class CreateSetComponent implements OnInit {
   router = inject(Router);
   activatedRoute = inject(ActivatedRoute);
   createSetService = inject(CreateSetService);
-  addedSet = signal(false);
-  addedSet$ = toObservable(this.addedSet);
 
   // For Editing [
   edit = input<string>();
@@ -52,6 +50,8 @@ export class CreateSetComponent implements OnInit {
     // For Editing [
     if (this.isEditing()) {
       this.selectedSet = this.flashcardsService.getSet(+this.edit()!);
+      console.log(this.selectedSet);
+      console.log(this.cards);
 
       this.form.patchValue({
         title: this.selectedSet!.title,
@@ -194,7 +194,6 @@ export class CreateSetComponent implements OnInit {
       .addSet({ title, description, cards: newCards })
       .subscribe({
         next: (res) => {
-          this.addedSet.set(true);
           this.router.navigate(['']);
         },
         error(err) {
@@ -204,23 +203,23 @@ export class CreateSetComponent implements OnInit {
 
     // ========================================================================== //
 
-    if (this.isEditing()) {
-      const setId = this.selectedSet!.setId;
+    // if (this.isEditing()) {
+    //   const setId = this.selectedSet!.setId;
 
-      //   const editedCards = newCards.map((card) => ({ ...card, setId }));
+    //     const editedCards = newCards.map((card) => ({ ...card, setId }));
 
-      //   this.flashcardsService.editSet(
-      //     {
-      //       title,
-      //       description,
-      //       setId,
-      //     },
-      //     editedCards
-      //   );
+    //   this.flashcardsService.editSet(
+    //     {
+    //       title,
+    //       description,
+    //       setId,
+    //     },
+    //     editedCards
+    //   );
 
-      //   this.router.navigate(['']);
-      //   return;
-    }
+    //   this.router.navigate(['']);
+    //   return;
+    // }
 
     // this.flashcardsService.addSet(
     //   {
@@ -250,9 +249,3 @@ export class CreateSetComponent implements OnInit {
     });
   }
 }
-
-// export const canLeavePage: CanDeactivateFn<CreateSetComponent> = (
-//   component
-// ) => {
-//   return component.addedSet$;
-// };
