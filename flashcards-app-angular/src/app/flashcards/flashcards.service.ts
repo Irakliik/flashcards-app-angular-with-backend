@@ -57,6 +57,13 @@ export class FlashcardsService {
       );
   }
 
+  updateSet(updatedSet: NewSet, setId: number) {
+    return this.httpClient.put(`http://localhost:3000/set`, {
+      updatedSet,
+      setId,
+    });
+  }
+
   updateCard(updatedCard: Card) {
     this.cardsOfSet.update((old) =>
       old.map((card) => (card.id === updatedCard.id ? updatedCard : card))

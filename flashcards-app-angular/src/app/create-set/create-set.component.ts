@@ -46,28 +46,26 @@ export class CreateSetComponent implements OnInit {
   edit = input<string>();
   isEditing = computed(() => (this.edit() ? true : false));
   selectedSet?: CardSet;
-  // cards: Card[];
+  cards: Card[] = this.flashcardsService.allCardsOfSet();
   // ]
   ngOnInit(): void {
     // For Editing [
     if (this.isEditing()) {
       this.selectedSet = this.flashcardsService.getSet(+this.edit()!);
-      const cards = this.flashcardsService.allCardsOfSet();
-      console.log(cards);
 
       this.form.patchValue({
         title: this.selectedSet!.title,
         description: this.selectedSet!.description,
       });
 
-      for (let i = 0; i < cards.length - 3; i++) {
+      for (let i = 0; i < this.cards.length - 3; i++) {
         this.addCardGroup();
       }
 
-      for (let i = 0; i < cards.length; i++) {
+      for (let i = 0; i < this.cards.length; i++) {
         this.form.controls.creatingCards.controls[i].patchValue({
-          term: cards[i].term,
-          definition: cards[i].definition,
+          term: this.cards[i].term,
+          definition: this.cards[i].definition,
           id: crypto.randomUUID().toString(),
         });
       }
@@ -176,34 +174,53 @@ export class CreateSetComponent implements OnInit {
       (creatingCard) => creatingCard.definition && creatingCard.term
     );
 
+    if (this.isEditing()) {
+      this.flashcardsService
+        .updateSet(
+          { title, description, cards: newCards },
+          this.selectedSet!.setId
+        )
+        .subscribe({
+          next: (res) => {
+            console.log(res);
+            this.router.navigate(['']);
+          },
+        });
+
+      return;
+    }
+
     this.flashcardsService
       .addSet({ title, description, cards: newCards })
       .subscribe({
         next: (res) => {
           this.addedSet.set(true);
           this.router.navigate(['']);
-
-          console.log(res);
+        },
+        error(err) {
+          console.log(err);
         },
       });
 
-    // if (this.isEditing()) {
-    //   const setId = this.selectedSet!.setId;
+    // ========================================================================== //
 
-    //   const editedCards = newCards.map((card) => ({ ...card, setId }));
+    if (this.isEditing()) {
+      const setId = this.selectedSet!.setId;
 
-    //   this.flashcardsService.editSet(
-    //     {
-    //       title,
-    //       description,
-    //       setId,
-    //     },
-    //     editedCards
-    //   );
+      //   const editedCards = newCards.map((card) => ({ ...card, setId }));
 
-    //   this.router.navigate(['']);
-    //   return;
-    // }
+      //   this.flashcardsService.editSet(
+      //     {
+      //       title,
+      //       description,
+      //       setId,
+      //     },
+      //     editedCards
+      //   );
+
+      //   this.router.navigate(['']);
+      //   return;
+    }
 
     // this.flashcardsService.addSet(
     //   {

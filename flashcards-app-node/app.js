@@ -3,7 +3,7 @@ const path = require("path");
 const express = require("express");
 const db = require("./util/database");
 const bodyParser = require("body-parser");
-const { assert } = require("console");
+const { assert, error } = require("console");
 
 const app = express();
 
@@ -11,8 +11,12 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, PUT, DELETE, PATCH");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, PUT, DELETE, PATCH, POST"
+  );
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
   next();
 });
 
@@ -50,6 +54,39 @@ app.post("/set", (req, res) => {
       res.status(200).json({ message: "Added Successfully" });
     })
     .catch((err) => console.log(err));
+});
+
+app.put("/set", async (req, res) => {
+  const {
+    setId,
+    updatedSet: { title, description, cards },
+  } = req.body;
+
+  try {
+    const [r] = await db.execute("DELETE FROM cards WHERE set_id=?", [setId]);
+
+    const [result] = await db.execute(
+      "UPDATE sets SET title = ?, description = ? WHERE set_id = ?",
+      [title, description, setId]
+    );
+
+    if (result.affectedRows === 0) {
+      res.status(404).json({ message: "Set Not Found" });
+    }
+
+    const newCards = cards.map((card) => [setId, card.term, card.definition]);
+
+    await db.query("INSERT INTO cards (set_id, term, definition) VALUES ?", [
+      newCards,
+    ]);
+
+    res.status(200).json({ message: "Set Updated Successfully" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      error: "Update Failed",
+    });
+  }
 });
 
 app.get("/cards/:setId", (req, res) => {
