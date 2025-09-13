@@ -10,9 +10,6 @@ import { FlashcardsService } from './flashcards.service';
 import { RouterOutlet } from '@angular/router';
 import { BoardComponent } from './board/board.component';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/internal/operators/map';
-import { Card, CardSet, Sets } from '../sets-model';
-
 @Component({
   selector: 'app-flashcards',
   standalone: true,
@@ -52,15 +49,6 @@ export class FlashcardsComponent implements OnInit {
         this.totalCardsNum.set(this.selectedCards().length);
       },
     });
-
-    // this.flashcardsService.updateCard$.subscribe({
-    //   next: (newCard) => {
-    //     this.flashcardsService.replaceCard({
-    //       ...newCard,
-    //       setId: this.selectedSet()!.setId,
-    //     });
-    //   },
-    // });
   }
 
   onPreviousCard() {
@@ -86,7 +74,6 @@ export class FlashcardsComponent implements OnInit {
   }
 
   onShuffle() {
-    console.log('nana');
     this.flashcardsService.shuffleCards();
   }
 }

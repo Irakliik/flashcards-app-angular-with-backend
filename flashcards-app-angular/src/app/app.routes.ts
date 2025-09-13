@@ -19,6 +19,7 @@ export const routes: Routes = [
   {
     path: 'flashcards/:setId',
     component: FlashcardsComponent,
+
     children: [
       {
         path: 'edit/:cardId',

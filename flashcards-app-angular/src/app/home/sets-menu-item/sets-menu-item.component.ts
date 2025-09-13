@@ -36,9 +36,14 @@ export class SetsMenuItemComponent implements OnInit {
   onEditBtn(e: Event) {
     e.stopPropagation();
     e.preventDefault();
-    this.router.navigate(['create-set'], {
-      queryParams: {
-        edit: this.cardSet().setId,
+
+    this.flashcardsService.fetchCards(this.cardSet().setId).subscribe({
+      next: () => {
+        this.router.navigate(['create-set'], {
+          queryParams: {
+            edit: this.cardSet().setId,
+          },
+        });
       },
     });
   }

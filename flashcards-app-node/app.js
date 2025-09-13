@@ -45,7 +45,10 @@ app.post("/set", (req, res) => {
         cards,
       ]);
     })
-    .then((res) => console.log(res))
+    .then(() => {
+      console.log(res);
+      res.status(200).json({ message: "Added Successfully" });
+    })
     .catch((err) => console.log(err));
 });
 

@@ -1,4 +1,11 @@
-import { Component, computed, inject, input, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { CreatingCardComponent } from './creating-card/creating-card.component';
 import {
   FormArray,
@@ -12,6 +19,8 @@ import { FlashcardsService } from '../flashcards/flashcards.service';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Card, CardSet, NewCard } from '../sets-model';
 import { CreateSetService } from './create-set.service';
+
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-create-set',
@@ -30,34 +39,38 @@ export class CreateSetComponent implements OnInit {
   router = inject(Router);
   activatedRoute = inject(ActivatedRoute);
   createSetService = inject(CreateSetService);
+  addedSet = signal(false);
+  addedSet$ = toObservable(this.addedSet);
+
   // For Editing [
   edit = input<string>();
   isEditing = computed(() => (this.edit() ? true : false));
   selectedSet?: CardSet;
-  cards?: Card[];
+  // cards: Card[];
   // ]
   ngOnInit(): void {
     // For Editing [
     if (this.isEditing()) {
-      // this.selectedSet = this.flashcardsService.getSet(this.edit()!);
-      // this.cards = this.flashcardsService.getCards(this.edit()!);
+      this.selectedSet = this.flashcardsService.getSet(+this.edit()!);
+      const cards = this.flashcardsService.allCardsOfSet();
+      console.log(cards);
 
       this.form.patchValue({
         title: this.selectedSet!.title,
         description: this.selectedSet!.description,
       });
 
-      // for (let i = 0; i < this.cards.length - 3; i++) {
-      //   this.addCardGroup();
-      // }
+      for (let i = 0; i < cards.length - 3; i++) {
+        this.addCardGroup();
+      }
 
-      // this.form.controls.creatingCards.controls.forEach((control, i) =>
-      //   control.patchValue({
-      //     term: this.cards![i].term,
-      //     definition: this.cards![i].definition,
-      //     id: this.cards![i].id,
-      //   })
-      // );
+      for (let i = 0; i < cards.length; i++) {
+        this.form.controls.creatingCards.controls[i].patchValue({
+          term: cards[i].term,
+          definition: cards[i].definition,
+          id: crypto.randomUUID().toString(),
+        });
+      }
     }
 
     //  ]
@@ -166,7 +179,12 @@ export class CreateSetComponent implements OnInit {
     this.flashcardsService
       .addSet({ title, description, cards: newCards })
       .subscribe({
-        next: (res) => console.log(res),
+        next: (res) => {
+          this.addedSet.set(true);
+          this.router.navigate(['']);
+
+          console.log(res);
+        },
       });
 
     // if (this.isEditing()) {
@@ -194,7 +212,6 @@ export class CreateSetComponent implements OnInit {
     //   },
     //   newCards
     // );
-    this.router.navigate(['']);
   }
 
   onSwap() {
@@ -216,3 +233,9 @@ export class CreateSetComponent implements OnInit {
     });
   }
 }
+
+// export const canLeavePage: CanDeactivateFn<CreateSetComponent> = (
+//   component
+// ) => {
+//   return component.addedSet$;
+// };

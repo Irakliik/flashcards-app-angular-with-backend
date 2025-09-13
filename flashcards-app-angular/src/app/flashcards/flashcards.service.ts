@@ -10,6 +10,14 @@ export class FlashcardsService {
 
   httpClient = inject(HttpClient);
 
+  private sets = signal<Sets>(Flashcards);
+
+  private cardsOfSet = signal<Card[]>(cards);
+
+  allSets = this.sets.asReadonly();
+
+  allCardsOfSet = this.cardsOfSet.asReadonly();
+
   fetchCards(setId: number) {
     return this.httpClient
       .get<{ cards: Card[] }>('http://localhost:3000/cards/' + setId)
@@ -32,54 +40,10 @@ export class FlashcardsService {
       );
   }
 
-  private sets = signal<Sets>(Flashcards);
-
-  private cardsOfSet = signal<Card[]>(cards);
-
-  allSets = this.sets.asReadonly();
-
-  allCardsOfSet = this.cardsOfSet.asReadonly();
-
-  // updateCard$ = new Subject<NewCard>();
-
   addSet(newSet: NewSet) {
-    // const setId = new Date().getTime().toString();
-
-    // this.sets.update((oldsets) => [...oldsets, { ...newSet, setId: setId }]);
-
-    // const cards: Card[] = newCards.map((newCards) => ({
-    //   ...newCards,
-    //   setId: setId,
-    // }));
-    console.log('gaga');
-
     return this.httpClient
       .post('http://localhost:3000/set', newSet)
       .pipe(tap((res) => {}));
-
-    this.cardsOfSet.update((oldCards) => [...oldCards, ...cards]);
-  }
-
-  editSet(editedSet: CardSet, editedCards: Card[]) {
-    this.sets.update((oldSets) =>
-      oldSets.map((set) => (set.setId === editedSet.setId ? editedSet : set))
-    );
-    this.cardsOfSet.update((oldCards) =>
-      oldCards.filter((card) => card.setId !== editedSet.setId)
-    );
-
-    this.cardsOfSet.update((oldCards) => [...oldCards, ...editedCards]);
-
-    this.saveSets();
-    this.saveCards();
-  }
-
-  getSet(setId: number) {
-    return this.sets().find((set) => set.setId === setId);
-  }
-
-  getCards(setId: number) {
-    return this.cardsOfSet().filter((card) => card.setId === setId);
   }
 
   deleteSet(setId: number) {
@@ -91,11 +55,6 @@ export class FlashcardsService {
           this.sets.set(res.sets);
         })
       );
-
-    this.sets.update((oldSets) => oldSets.filter((set) => set.setId !== setId));
-    this.deleteCards(setId);
-    this.saveSets();
-    this.saveCards();
   }
 
   updateCard(updatedCard: Card) {
@@ -106,11 +65,30 @@ export class FlashcardsService {
     return this.httpClient.patch('http://localhost:3000/cards', updatedCard);
   }
 
-  deleteCards(setId: number) {
-    this.cardsOfSet.update((oldcards) =>
-      oldcards.filter((card) => card.setId !== setId)
+  editSet(editedSet: CardSet, editedCards: Card[]) {
+    this.sets.update((oldSets) =>
+      oldSets.map((set) => (set.setId === editedSet.setId ? editedSet : set))
     );
+    this.cardsOfSet.update((oldCards) =>
+      oldCards.filter((card) => card.setId !== editedSet.setId)
+    );
+
+    this.cardsOfSet.update((oldCards) => [...oldCards, ...editedCards]);
   }
+
+  getSet(setId: number) {
+    return this.sets().find((set) => set.setId === setId);
+  }
+
+  getCards(setId: number) {
+    return this.cardsOfSet().filter((card) => card.setId === setId);
+  }
+
+  // deleteCards(setId: number) {
+  //   this.cardsOfSet.update((oldcards) =>
+  //     oldcards.filter((card) => card.setId !== setId)
+  //   );
+  // }
 
   getCard(cardId: number) {
     return this.allCardsOfSet().find((card) => card.id === cardId);
@@ -120,19 +98,9 @@ export class FlashcardsService {
     this.cardsOfSet.update((oldCards) =>
       oldCards.map((card) => (card.id === updatedCard.id ? updatedCard : card))
     );
-    this.saveCards();
   }
 
   swapCards() {
-    // this.cardsOfSet.update((oldCards) =>
-    //   oldCards.map((card) =>
-    //     card.setId === setId
-    //       ? { ...card, term: card.definition, definition: card.term }
-    //       : card
-    //   )
-    // );
-
-    // this.saveCards();
     this.cardsOfSet.update((oldCards) =>
       oldCards.map((card) => ({
         ...card,
@@ -140,14 +108,6 @@ export class FlashcardsService {
         definition: card.term,
       }))
     );
-  }
-
-  private saveSets() {
-    localStorage.setItem('sets', JSON.stringify(this.sets()));
-  }
-
-  private saveCards() {
-    localStorage.setItem('cards', JSON.stringify(this.cardsOfSet()));
   }
 
   shuffleCards() {
@@ -158,26 +118,4 @@ export class FlashcardsService {
     }
     this.cardsOfSet.set(temp);
   }
-
-  // shuffleCards(setId: number) {
-  //   const indices = this.cardsOfSet().reduce<number[]>((acc, val, i) => {
-  //     return val.setId === setId ? [...acc, i] : acc;
-  //   }, []);
-
-  //   const setCards = this.cardsOfSet().filter(
-  //     (card, i) => card.setId === setId
-  //   );
-
-  //   const shuffledSetCards = this.shuffle([...setCards]);
-
-  //   const cards = [...this.cardsOfSet()];
-
-  //   indices.forEach((val, i) => {
-  //     cards[val] = shuffledSetCards[i];
-  //   });
-
-  //   this.cardsOfSet.set(cards);
-
-  //   this.saveCards();
-  // }
 }
