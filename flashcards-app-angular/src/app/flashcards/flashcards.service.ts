@@ -91,12 +91,6 @@ export class FlashcardsService {
     return this.cardsOfSet().filter((card) => card.setId === setId);
   }
 
-  // deleteCards(setId: number) {
-  //   this.cardsOfSet.update((oldcards) =>
-  //     oldcards.filter((card) => card.setId !== setId)
-  //   );
-  // }
-
   getCard(cardId: number) {
     return this.allCardsOfSet().find((card) => card.id === cardId);
   }

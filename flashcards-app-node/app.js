@@ -3,7 +3,6 @@ const path = require("path");
 const express = require("express");
 const { db, initDB } = require("./util/database");
 const bodyParser = require("body-parser");
-const { assert, error } = require("console");
 
 const app = express();
 
@@ -21,6 +20,8 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static(path.join(__dirname, "public/browser")));
+
+app.use(bodyParser.urlencoded({ extended: false }));
 
 const leftJoinQuery =
   "SELECT sets.set_id AS setId, title, description,  COUNT(*) AS numCards FROM sets LEFT JOIN cards ON cards.set_id = sets.set_id GROUP BY sets.set_id";
