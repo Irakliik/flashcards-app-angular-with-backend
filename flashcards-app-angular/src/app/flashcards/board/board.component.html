@@ -1,9 +1,16 @@
-<div class="board row" [class.rotate]="rotate" (click)="turnCard()">
+<div
+  class="board row"
+  [class]="{
+    toBack: rotate() === 'back',
+    toFront: rotate() === 'front'
+  }"
+  (click)="turnCard()"
+>
   <div
     class="board__tools row"
-    [class]="{
-      'board__tools--invisible': toolsInvisible,
-      hidden: hidden
+    [style]="{
+      opacity: rotate() === 'back' ? '0' : '1',
+      visibility: rotate() === 'back' ? 'hidden' : 'visible'
     }"
   >
     <button
@@ -18,17 +25,25 @@
       <img src="edit.png" class="edit-btn__icon" alt="edit icon" />
     </button>
   </div>
-  <div class="word-container">
-    @if (front()) {
-    <p class="front text" [class.front-visible]="frontVisible">
-      {{ selectedCard()?.term }}
-    </p>
-    } @else {
 
-    <p class="back text" [class.back-visible]="backVisible">
-      {{ selectedCard()?.definition }}
-    </p>
+  <p
+    class="front text"
+    [style]="{
+      opacity: rotate() === 'back' ? '0' : '1',
+      visibility: rotate() === 'back' ? 'hidden' : 'visible'
+    }"
+  >
+    {{ selectedCard()?.term }}
+  </p>
 
-    }
-  </div>
+  <p
+    class="back text"
+    [style]="{
+      opacity: rotate() === 'front' || rotate() === 'none' ? '0' : '1',
+      visibility:
+        rotate() === 'front' || rotate() === 'none' ? 'hidden' : 'visible'
+    }"
+  >
+    {{ selectedCard()?.definition }}
+  </p>
 </div>

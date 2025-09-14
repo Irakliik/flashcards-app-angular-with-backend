@@ -21,6 +21,7 @@ export class FlashcardsComponent implements OnInit {
   setId = input.required<number>();
   httpClient = inject(HttpClient);
   flashcardsService = inject(FlashcardsService);
+  rotate = signal<'none' | 'front' | 'back'>('none');
 
   // selectedSet = signal<CardSet>({
   //   title: '',
@@ -56,6 +57,7 @@ export class FlashcardsComponent implements OnInit {
       this.selectedCardNum.update((val) => --val);
       this.isTerm = true;
       this.hintShown = false;
+      if (this.rotate() === 'back') this.rotate.set('front');
     }
   }
 
@@ -64,6 +66,7 @@ export class FlashcardsComponent implements OnInit {
       this.selectedCardNum.update((val) => ++val);
       this.isTerm = true;
       this.hintShown = false;
+      if (this.rotate() === 'back') this.rotate.set('front');
     }
   }
 

@@ -22,11 +22,7 @@ export class BoardComponent {
   selectedCard = input<Card>();
   isTerm = model<boolean>();
   front = signal(true);
-  rotate = false;
-  backVisible = false;
-  frontVisible = true;
-  toolsInvisible = false;
-  hidden = false;
+  rotate = model<'none' | 'front' | 'back'>();
 
   hintShown = model.required<boolean>();
 
@@ -43,27 +39,10 @@ export class BoardComponent {
   );
 
   turnCard() {
-    // this.deg.set((this.deg() + 180) % 360);
-    this.rotate = !this.rotate;
-    this.front.update((pos) => !pos);
-
-    if (this.rotate) {
-      this.frontVisible = false;
-      this.toolsInvisible = true;
-      setTimeout(() => {
-        this.backVisible = true;
-        this.hidden = true;
-      }, 100);
-    }
-
-    if (!this.rotate) {
-      this.backVisible = false;
-      this.toolsInvisible = false;
-
-      setTimeout(() => {
-        this.frontVisible = true;
-        this.hidden = false;
-      }, 100);
+    if (this.rotate() === 'none' || this.rotate() === 'front') {
+      this.rotate.set('back');
+    } else if (this.rotate() === 'back') {
+      this.rotate.set('front');
     }
   }
 
