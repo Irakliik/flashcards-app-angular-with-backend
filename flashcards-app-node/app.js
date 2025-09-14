@@ -1,7 +1,7 @@
 const path = require("path");
 
 const express = require("express");
-const db = require("./util/database");
+const { db, initDB } = require("./util/database");
 const bodyParser = require("body-parser");
 const { assert, error } = require("console");
 
@@ -27,7 +27,6 @@ const leftJoinQuery =
 
 app.get("/sets", (req, res) => {
   db.execute(leftJoinQuery).then(([sets]) => {
-    console.log(sets);
     res.status(200).json({ sets: sets });
   });
 });
@@ -50,7 +49,6 @@ app.post("/set", (req, res) => {
       ]);
     })
     .then(() => {
-      console.log(res);
       res.status(200).json({ message: "Added Successfully" });
     })
     .catch((err) => console.log(err));
@@ -91,7 +89,6 @@ app.put("/set", async (req, res) => {
 
 app.get("/cards/:setId", (req, res) => {
   const setId = req.params.setId;
-  console.log(setId);
   db.execute(
     "SELECT id, term, definition, set_id AS setId  FROM cards WHERE set_id=?",
     [setId]
@@ -141,4 +138,12 @@ app.patch("/cards", async (req, res) => {
   }
 });
 
-app.listen(3000);
+initDB()
+  .then(() => {
+    app.listen(3000, () => {
+      console.log("Server started successfully");
+    });
+  })
+  .catch((err) => {
+    console.log("could not start server", err);
+  });
