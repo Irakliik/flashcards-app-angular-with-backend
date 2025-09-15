@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
 import { FlashcardsService } from '../flashcards/flashcards.service';
 import { SetsMenuItemComponent } from './sets-menu-item/sets-menu-item.component';
@@ -17,14 +17,16 @@ export class HomeComponent implements OnInit {
   httpClient = inject(HttpClient);
   destroyRef = inject(DestroyRef);
   setFetched = false;
+  error = signal('');
 
   ngOnInit(): void {
     const subscription = this.flashcardsService.fetchSets().subscribe({
       next: (res) => {
         this.setFetched = true;
       },
-      error: () =>
-        new Error('Something went wrong fetching the available sets'),
+      error: (error: Error) => {
+        this.error.set(error.message);
+      },
     });
 
     this.destroyRef.onDestroy(() => {

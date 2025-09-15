@@ -1,4 +1,11 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnInit,
+  output,
+  signal,
+} from '@angular/core';
 import { FlashcardsService } from '../../flashcards/flashcards.service';
 import { Card, CardSet, Sets } from '../../sets-model';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -22,6 +29,7 @@ export class SetsMenuItemComponent implements OnInit {
   flashcardsService = inject(FlashcardsService);
 
   cardSet = input.required<CardSet>();
+  error = signal('');
 
   ngOnInit(): void {
     // this.cards = this.flashcardsService.getCards(this.cardSet().setId);
@@ -44,6 +52,10 @@ export class SetsMenuItemComponent implements OnInit {
             edit: this.cardSet().setId,
           },
         });
+      },
+
+      error: (error: Error) => {
+        this.error.set(error.message);
       },
     });
   }

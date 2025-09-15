@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Card, CardSet, NewCard, type NewSet, type Sets } from '../sets-model';
-import { map, Subject, tap, throwError } from 'rxjs';
+import { catchError, map, Subject, tap, throwError } from 'rxjs';
 import { cards, Flashcards } from './flashcards';
 import { HttpClient } from '@angular/common/http';
 
@@ -24,9 +24,11 @@ export class FlashcardsService {
       .pipe(
         map((res) => res.cards),
         tap((cards) => {
-          console.log(cards);
           this.cardsOfSet.set(cards);
-        })
+        }),
+        catchError((error) =>
+          throwError(() => new Error('Something went wrong fetching the cards'))
+        )
       );
   }
 
@@ -35,16 +37,25 @@ export class FlashcardsService {
       .get<{ sets: Sets }>('http://localhost:3000/sets')
       .pipe(
         tap((res) => {
-          // console.log(res.sets);
           this.sets.set(res.sets);
-        })
+        }),
+
+        catchError((error) =>
+          throwError(() => new Error('Something went wrong fetching the sets'))
+        )
       );
   }
 
   addSet(newSet: NewSet) {
     return this.httpClient
       .post('http://localhost:3000/sets/add', newSet)
-      .pipe(tap((res) => {}));
+      .pipe(
+        catchError((error) =>
+          throwError(
+            () => new Error('Something went wrong adding creating the set')
+          )
+        )
+      );
   }
 
   deleteSet(setId: number) {
@@ -52,17 +63,26 @@ export class FlashcardsService {
       .delete<{ sets: Sets }>(`http://localhost:3000/sets/${setId}`)
       .pipe(
         tap((res) => {
-          // console.log(res);
           this.sets.set(res.sets);
-        })
+        }),
+
+        catchError((error) =>
+          throwError(() => new Error('Something went wrong deleting the set'))
+        )
       );
   }
 
   updateSet(updatedSet: NewSet, setId: number) {
-    return this.httpClient.put(`http://localhost:3000/sets/update`, {
-      updatedSet,
-      setId,
-    });
+    return this.httpClient
+      .put(`http://localhost:3000/sets/update`, {
+        updatedSet,
+        setId,
+      })
+      .pipe(
+        catchError((error) =>
+          throwError(() => new Error('Something went wrong updating the set'))
+        )
+      );
   }
 
   updateCard(updatedCard: Card) {
@@ -70,7 +90,13 @@ export class FlashcardsService {
       old.map((card) => (card.id === updatedCard.id ? updatedCard : card))
     );
 
-    return this.httpClient.patch('http://localhost:3000/cards', updatedCard);
+    return this.httpClient
+      .patch('http://localhost:3000/cards', updatedCard)
+      .pipe(
+        catchError((error) =>
+          throwError(() => new Error('Something went wrong updating the card'))
+        )
+      );
   }
 
   editSet(editedSet: CardSet, editedCards: Card[]) {

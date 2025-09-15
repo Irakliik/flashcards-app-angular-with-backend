@@ -22,6 +22,7 @@ export class FlashcardsComponent implements OnInit {
   httpClient = inject(HttpClient);
   flashcardsService = inject(FlashcardsService);
   rotate = signal<'none' | 'front' | 'back'>('none');
+  error = signal('');
 
   // selectedSet = signal<CardSet>({
   //   title: '',
@@ -50,8 +51,8 @@ export class FlashcardsComponent implements OnInit {
       next: () => {
         this.totalCardsNum.set(this.selectedCards().length);
       },
-      error: (err) => {
-        console.log(err);
+      error: (error: Error) => {
+        this.error.set(error.message);
       },
     });
   }

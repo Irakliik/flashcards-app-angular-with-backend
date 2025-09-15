@@ -6,6 +6,7 @@ import {
   model,
   OnInit,
   output,
+  signal,
 } from '@angular/core';
 import { Card } from '../../../sets-model';
 import { FlashcardsService } from '../../flashcards.service';
@@ -30,6 +31,8 @@ export class EditCardComponent implements OnInit {
   cardId = input.required<string>();
   card = computed<Card>(() => this.flashcardsService.getCard(+this.cardId())!)!;
 
+  error = signal('');
+
   form = new FormGroup({
     newTerm: new FormControl(''),
     newDefinition: new FormControl(''),
@@ -53,11 +56,6 @@ export class EditCardComponent implements OnInit {
     e.preventDefault();
     const newTerm = this.form.value.newTerm!;
     const newDefinition = this.form.value.newDefinition!;
-    // this.flashcardsService.updateCard$.next({
-    //   term: newTerm,
-    //   definition: newDefinition,
-    //   id: this.card().id,
-    // });
 
     const updatedCard: Card = {
       term: newTerm,
@@ -68,7 +66,9 @@ export class EditCardComponent implements OnInit {
 
     this.flashcardsService.updateCard(updatedCard).subscribe({
       next: (res) => console.log(res),
-      error: (err) => console.log(err),
+      error: (error: Error) => {
+        this.error.set(error.message);
+      },
     });
     this.onCloseBtn();
   }

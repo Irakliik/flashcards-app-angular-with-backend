@@ -5,11 +5,15 @@ const { db } = require("../util/database");
 const leftJoinQuery =
   "SELECT sets.set_id AS setId, title, description,  COUNT(*) AS numCards FROM sets LEFT JOIN cards ON cards.set_id = sets.set_id GROUP BY sets.set_id";
 
+// =======================================================
+
 router.get("/", (req, res) => {
   db.execute(leftJoinQuery).then(([sets]) => {
     res.status(200).json({ sets: sets });
   });
 });
+
+// =======================================================
 
 router.post("/add", (req, res) => {
   const newSet = { title: req.body.title, description: req.body.description };
@@ -33,6 +37,8 @@ router.post("/add", (req, res) => {
     })
     .catch((err) => console.log(err));
 });
+
+// =======================================================
 
 router.put("/update", async (req, res) => {
   const {
@@ -67,6 +73,8 @@ router.put("/update", async (req, res) => {
   }
 });
 
+// =======================================================
+
 router.delete("/:id", (req, res) => {
   const setId = req.params.id;
   db.execute("DELETE FROM sets WHERE set_id=?", [setId]).then(() =>
@@ -76,8 +84,10 @@ router.delete("/:id", (req, res) => {
   );
 });
 
-router.get("/:setId", (req, res) => {
-  const setId = req.params.setId;
+// =======================================================
+
+router.get("/:id", (req, res) => {
+  const setId = req.params.id;
 
   db.execute(
     "SELECT title, description, set_id AS setId FROM sets WHERE set_id=?",

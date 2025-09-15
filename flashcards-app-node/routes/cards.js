@@ -2,6 +2,10 @@ const express = require("express");
 
 const router = express.Router();
 const { db } = require("../util/database");
+
+// =======================================================
+// =======================================================
+
 router.patch("/", async (req, res) => {
   const { id, term, definition } = req.body;
 
@@ -22,6 +26,9 @@ router.patch("/", async (req, res) => {
     res.status(500).json({ error: "update failed" });
   }
 });
+
+// =======================================================
+// =======================================================
 
 router.get("/:setId", (req, res) => {
   const setId = req.params.setId;
