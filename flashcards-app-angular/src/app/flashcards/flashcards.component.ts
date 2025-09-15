@@ -45,9 +45,13 @@ export class FlashcardsComponent implements OnInit {
   hintShown = false;
 
   ngOnInit(): void {
+    console.log(this.setId());
     this.flashcardsService.fetchCards(this.setId()).subscribe({
       next: () => {
         this.totalCardsNum.set(this.selectedCards().length);
+      },
+      error: (err) => {
+        console.log(err);
       },
     });
   }

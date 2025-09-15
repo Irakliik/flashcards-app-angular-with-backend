@@ -24,6 +24,7 @@ export class FlashcardsService {
       .pipe(
         map((res) => res.cards),
         tap((cards) => {
+          console.log(cards);
           this.cardsOfSet.set(cards);
         })
       );
@@ -42,7 +43,7 @@ export class FlashcardsService {
 
   addSet(newSet: NewSet) {
     return this.httpClient
-      .post('http://localhost:3000/set', newSet)
+      .post('http://localhost:3000/sets/add', newSet)
       .pipe(tap((res) => {}));
   }
 
@@ -58,7 +59,7 @@ export class FlashcardsService {
   }
 
   updateSet(updatedSet: NewSet, setId: number) {
-    return this.httpClient.put(`http://localhost:3000/set`, {
+    return this.httpClient.put(`http://localhost:3000/sets/update`, {
       updatedSet,
       setId,
     });
