@@ -1,21 +1,17 @@
 const mysql = require("mysql2");
+require("dotenv").config();
 
 const pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "Irakliko20",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
-
-// module.exports = pool.promise();
 
 const db = pool.promise();
 
 async function initDB() {
   try {
-    await db.query("CREATE DATABASE IF NOT EXISTS flashcards_app");
-
-    await db.query("USE flashcards_app");
-
     // =========================================================================
 
     const initialSets = [
@@ -82,7 +78,7 @@ async function initDB() {
 
     console.log("Database and tables ready");
   } catch (err) {
-    console.error("❌ Error initializing DB:", err);
+    console.error("Error initializing DB:", err);
     throw err;
   }
 }
